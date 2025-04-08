@@ -1,0 +1,65 @@
+env:
+    contexts:
+    -
+        excludePaths: []
+        includePaths:
+        - http://crapi.apisec.ai/.*
+        name: Default Context
+        technology:
+            exclude: []
+        urls:
+        - http://crapi.apisec.ai/
+        authentication:
+            method: form
+            parameters:
+                loginPageUrl: http://crapi.apisec.ai/login
+                loginRequestBody: email={%username%}&password={%password%}
+                loginRequestUrl: http://crapi.apisec.ai/login
+            verification:
+                method: poll
+                loggedInRegex: (?i)Vehicles Details
+                loggedOutRegex: (?i)Login
+                pollFrequency: 60
+                pollUnits: requests
+                pollUrl: http://crapi.apisec.ai/login
+        sessionManagement:
+            method: cookie
+            parameters: {}
+        users:
+        -
+            credentials:
+                password: Admin770!!
+                username: 'test800@test.com '
+            name: authentication user
+    vars: {}
+    parameters:
+        failOnError: true
+        failOnWarning: false
+        progressToStdout: true
+jobs:
+-
+    parameters:
+        scanOnlyInScope: true
+        enableTags: false
+    rules: []
+    name: passiveScan-config
+    type: passiveScan-config
+-
+    name: openapi
+    parameters:
+        apiFile: /demo/swagger_api.yaml
+        context: Default Context
+    type: openapi
+-
+    parameters: {}
+    name: passiveScan-wait
+    type: passiveScan-wait
+-
+    parameters:
+        context: Default Context
+        threadPerHost: 4
+        user: authentication user
+    policyDefinition:
+        rules: []
+    name: activeScan
+    type: activeScan
