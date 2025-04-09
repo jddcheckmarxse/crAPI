@@ -13,7 +13,7 @@ trigger: none
 # API key variables are stored in a Library
 
 variables:
-- group: "pipeline_var_group"
+- group: "var_group_2"
 
 
  
