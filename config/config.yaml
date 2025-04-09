@@ -28,7 +28,7 @@ env:
         users:
         -
             credentials:
-                password: Admin770!!
+                password: Admin770!
                 username: 'test800@test.com '
             name: authentication user
     vars: {}
