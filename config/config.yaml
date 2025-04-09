@@ -10,18 +10,18 @@ env:
         urls:
         - http://crapi.apisec.ai/
         authentication:
-            method: form
+            method: json
             parameters:
                 loginPageUrl: http://crapi.apisec.ai/login
-                loginRequestBody: email={%username%}&password={%password%}
-                loginRequestUrl: http://crapi.apisec.ai/login
+                loginRequestBody: '{   "email": "{%username%}",   "password": "{%password%}" }'
+                loginRequestUrl: http://crapi.apisec.ai/identity/api/auth/login
             verification:
                 method: poll
-                loggedInRegex: (?i)Vehicles Details
-                loggedOutRegex: (?i)Login
+                loggedInRegex: ^Vehicles
+                loggedOutRegex: ^Login
                 pollFrequency: 60
                 pollUnits: requests
-                pollUrl: http://crapi.apisec.ai/login
+                pollUrl: http://crapi.apisec.ai/identity/api/auth/login
         sessionManagement:
             method: cookie
             parameters: {}
@@ -29,7 +29,7 @@ env:
         -
             credentials:
                 password: Admin770!
-                username: 'test800@test.com '
+                username: test800@test.com
             name: authentication user
     vars: {}
     parameters:
