@@ -1,0 +1,57 @@
+env:
+  contexts:
+  - name: Authentication Test
+    urls:
+    - http://crapi.apisec.ai
+    includePaths:
+    - http://crapi.apisec.ai.*
+    authentication:
+      method: browser
+      parameters:
+        loginPageUrl: http://crapi.apisec.ai/login
+        loginPageWait: 15
+        browserId: firefox-headless
+        steps: []
+      verification:
+        method: poll
+        loggedInRegex: \Q 200\E
+        loggedOutRegex: \Q 401\E
+        pollFrequency: 60
+        pollUnits: requests
+        pollUrl: http://crapi.apisec.ai/identity/api/v2/vehicle/vehicles
+        pollPostData: ""
+        pollAdditionalHeaders:
+        - header: content-type
+          value: application/json
+    sessionManagement:
+      method: headers
+      parameters:
+        Authorization: "Bearer {%json:token%}"
+    technology: {}
+    structure: {}
+    users:
+    - name: thoughtfulintp770@gmail.com
+      credentials:
+        password: Admin950!
+        username: thoughtfulintp770@gmail.com
+  parameters: {}
+jobs:
+- type: passiveScan-config
+  parameters: {}
+- type: openapi
+  parameters:
+    apiFile: C:\DAST\crAPI\crapi-openapi-spec.json
+    context: Authentication Test
+    user: test99@test.com
+- type: passiveScan-wait
+  parameters: {}
+- type: activeScan
+  parameters:
+    context: Authentication Test
+    user: test99@test.com
+    maxRuleDurationInMins: 1
+    maxScanDurationInMins: 1
+  policyDefinition:
+    defaultStrength: medium
+    defaultThreshold: medium
+
